@@ -1,8 +1,7 @@
 import xlwt
-import database.db as db
+import db
 import copy
-import time
-
+from config.config import config_file
 
 # 获取每列的最大列宽
 def get_max_col(max_list):
@@ -16,10 +15,11 @@ def get_max_col(max_list):
     return line_list
 
 
+# 将数据导出为excel函数
 def export_excel():
     conn = db.connect_database()
     cursor = conn.cursor()
-    table_name = time.strftime("D%Y_%m_%d", time.localtime())
+    table_name = db.get_table_name()
     sql = 'select * from %s' % table_name
     cursor.execute(sql)
     fields = [field[0] for field in cursor.description]  # 获取所有的字段名
@@ -44,9 +44,10 @@ def export_excel():
     # 设置自适应列宽
     for i in range(0, len(col_max_num)):
         sheet.col(i).width = 256 * (col_max_num[i] + 5)
-    # book.save("%s.xls" % table_name)
-    book.save("./web/static/%s.xls" % table_name)
-    db.close_connect(conn)
+    book.save(config_file)
+    # 关闭数据库连接
+    cursor.close()
+    conn.close()
 
 
 if __name__ == '__main__':
