@@ -38,10 +38,10 @@ def create_table(table_name):
                                                               'power int,' \
                                                               'day date,' \
                                                               'time date,' \
-                                                              'temp double(4,2),' \
-                                                              'humi double(4,2),' \
-                                                              'smoke int,' \
-                                                              'press varchar(20),' \
+                                                              'temp double(4,1),' \
+                                                              'humi int,' \
+                                                              'fire_alarm int,' \
+                                                              'press int,' \
                                                               'gps varchar(50),' \
                                                               'rfid varchar(50),' \
                                                               'verify varchar(20)) '
@@ -67,7 +67,7 @@ def insert(table_name, data):
     conn = sqlite3.connect('test.db')
     cursor = conn.cursor()
     # 插入一条记录
-    sql_insert = 'insert into ' + table_name + '(addr,power,day,time,temp,humi,smoke,press,gps,rfid,verify) values (?,?,?,?,?,?,?,?,?,?,?)'
+    sql_insert = 'insert into ' + table_name + '(addr,power,day,time,temp,humi,fire_alarm,press,gps,rfid,verify) values (?,?,?,?,?,?,?,?,?,?,?)'
     try:
         cursor.execute(sql_insert, data)
         conn.commit()
@@ -132,9 +132,9 @@ def select_humi(table_name):
     return select(table_name, 'humi')
 
 
-# 查询烟雾浓度
-def select_smoke(table_name):
-    return select(table_name, 'smoke')
+# 查询火警标志位
+def select_fire_alarm(table_name):
+    return select(table_name, 'fire_alarm')
 
 
 # 查询气压
@@ -142,9 +142,25 @@ def select_press(table_name):
     return select(table_name, 'press')
 
 
-# 查询gps
+# 查询经纬度
 def select_gps(table_name):
     return select(table_name, 'gps')
+
+
+# 查询经度
+def select_lon(table_name):
+    gps = select_gps(table_name)
+    lon_str = gps[:gps.index('&')]
+    lon = lon_str[:lon_str.index('.')]
+    return lon
+
+
+# 查询纬度
+def select_lat(table_name):
+    gps = select_gps(table_name)
+    lat_str = gps[gps.index('&') + 1:]
+    lat = lat_str[:lat_str.index('.')]
+    return lat
 
 
 # 查询RFID信息
