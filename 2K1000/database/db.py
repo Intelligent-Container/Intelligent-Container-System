@@ -40,9 +40,10 @@ def create_table(table_name):
                                                               'time date,' \
                                                               'temp double(4,2),' \
                                                               'humi double(4,2),' \
-                                                              'smok int,' \
-                                                              'atti varchar(20),' \
+                                                              'smoke int,' \
+                                                              'press varchar(20),' \
                                                               'gps varchar(50),' \
+                                                              'rfid varchar(50),' \
                                                               'verify varchar(20)) '
     # 异常处理
     try:
@@ -66,7 +67,7 @@ def insert(table_name, data):
     conn = sqlite3.connect('test.db')
     cursor = conn.cursor()
     # 插入一条记录
-    sql_insert = 'insert into ' + table_name + '(addr,power,day,time,temp,humi,smok,atti,gps,verify) values (?,?,?,?,?,?,?,?,?,?)'
+    sql_insert = 'insert into ' + table_name + '(addr,power,day,time,temp,humi,smoke,press,gps,rfid,verify) values (?,?,?,?,?,?,?,?,?,?,?)'
     try:
         cursor.execute(sql_insert, data)
         conn.commit()
@@ -101,7 +102,7 @@ def select(table_name, column_name):
         return None
 
 
-# 查询地址
+# 查询MAC地址
 def select_addr(table_name):
     return select(table_name, 'addr')
 
@@ -132,18 +133,23 @@ def select_humi(table_name):
 
 
 # 查询烟雾浓度
-def select_smok(table_name):
-    return select(table_name, 'smok')
+def select_smoke(table_name):
+    return select(table_name, 'smoke')
 
 
-# 查询姿态
-def select_atti(table_name):
-    return select(table_name, 'atti')
+# 查询气压
+def select_press(table_name):
+    return select(table_name, 'press')
 
 
 # 查询gps
 def select_gps(table_name):
     return select(table_name, 'gps')
+
+
+# 查询RFID信息
+def select_rfid(table_name):
+    return select(table_name, 'rfid')
 
 
 # 查询校验码

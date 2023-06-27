@@ -19,9 +19,9 @@ def main():
     while True:
         #str = uart.recv_data()
         str1 = q.get()
-        print(str1)
+        # print(str1)
         str2 = str1.decode("utf-8")
-        print(str2)
+        # print(str2)
         flag = isinstance(str2, str)
         try:
             if flag:
