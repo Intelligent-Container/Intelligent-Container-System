@@ -11,6 +11,7 @@ def recv_data(q):
     while True:
         data = ser.readline()
         if data:
+            print("okay")
             # return data.decode("utf-8")
             # print(data.decode("utf-8"))
             # print(data)
