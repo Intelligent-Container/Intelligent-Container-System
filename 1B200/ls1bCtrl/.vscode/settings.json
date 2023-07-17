@@ -1,0 +1,19 @@
+{
+    "files.associations": {
+        "*.c": "c",
+        "uart.h": "c",
+        "bsp.h": "c",
+        "stdio.h": "c",
+        "type_traits": "c",
+        "cjson.h": "c",
+        "led.h": "c",
+        "stdlib.h": "c",
+        "parse.h": "c",
+        "string.h": "c",
+        "ct75.h": "c",
+        "temp.h": "c",
+        "ls1x_i2c_bus.h": "c",
+        "gp7101.h": "c",
+        "ns16550.h": "c"
+    }
+}
