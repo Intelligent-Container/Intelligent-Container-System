@@ -11,6 +11,10 @@ current_obj = os.path.dirname(current_dir)
 # print(current_obj)
 # 获取测试数据的所在目录
 config_dir = os.path.join(current_obj, 'data')
+# print(config_dir)
 # 获取数据文件的绝对路径
-config_file = os.path.join(config_dir, db.get_table_name()+'.xls')
+# print(db.get_table_name())
+config_file = os.path.join(config_dir, db.get_table_name() +'.xls')
 # print(config_file)
+
+
