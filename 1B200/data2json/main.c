@@ -1,12 +1,4 @@
-/*
- * Copyright (C) 2020-2021 Suzhou Tiancheng Software Ltd.
- *
- * SPDX-License-Identifier: Apache-2.0
- */
 
-/*
- * Loongson 1B Bare Program, Sample main file
- */
 #include <stdio.h>
 #include <string.h>
 #include <pthread.h>
@@ -22,10 +14,6 @@
 #include "ls1x_rtc.h"
 #include "src\lux\lux.h"
 #include "src\other\other.h"
-
-//-------------------------------------------------------------------------------------------------
-// BSP
-//-------------------------------------------------------------------------------------------------
 
 #include "bsp.h"
 
@@ -43,6 +31,7 @@ struct tm tmp, now = {
 // 主程序
 //-------------------------------------------------------------------------------------------------
 
+//初始化GPIO，对应LoRaM0，M1
 static void ls1b_set_gpio_regs(void)
 {
     gpio_enable(40, DIR_OUT);    // Pin: CAN0_SDA2
@@ -59,14 +48,13 @@ int main(void)
     char loc[50];
     strcpy(loc, "112.342473&16.842207");
 
-    I2C1_init();
+    I2C1_init();            //初始化I2C
     Get_HDC_ID();
-    TSL_init();
     SPL06_init();
     ls1b_set_gpio_regs();
 
-    gpio_write(40,0);
-    gpio_write(41,0);
+    gpio_write(40,0);       //GPIO输出0，0 使LoRa工作在模式0
+    gpio_write(41,0);       
 
     // 初始化串口
     UART4_Config_Init();
@@ -88,24 +76,7 @@ int main(void)
 
     for (;;)
     {
-        // switch (cnt)
-        // {
-        // case /* constant-expression */:
-        //     /* code */
-        //     break;
-
-        // default:
-        //     cnt++;
-        //     break;
-        // }
-
-        // 串口发送json格式数据包
-        // UART4_Test("'{\"A\":\"start\",\"B\":\"00:01:1B:FF:FF:FF\",\"C\":\"514\",\"D\":[\"2023\",\"5\",\"14\"],\"E\":[\"10\",\"35\",\"32\"],\"F\":{\"F1\":\"29.567636\",\"F2\":\"48.476387\",\"F3\":\"95046.679688\",\"F4\":\"112.342473&16.842207\",\"F5\":\"0\"},\"G\":\"666\",\"H\":\"end\"}'");
-        // UART4_Test("'{?A?:?s!?,?B?:?00:01:1B:FF:FF:FF?,?C?:?514?,?D?:[?2023?,?5?,?14?],?E?:[?10?,?35?,?32?],?F?:{?F1?:?29.567636?,?F2?:?48.476387?,?F3?:?95046.679688?,?F5?:?0?},?G?:?666?,?H?:?e!?}'");
-
-        // UART4_Test(result);
-        // UART5_Test(result);
-
+        // 读取串口指令
         UART5_Read();
         // 数据采集发送计时器
         if (cnt >= 10)
@@ -133,21 +104,21 @@ int main(void)
             {
                 fire = 0;
             }
-
+            //拼接传感器数据
             sprintf(t3, "{\"F1\":\"%.2f\",\"F2\":\"%.0f\",\"F3\":\"%d\",\"F4\":\"%.0f\",\"F5\":\"%.0f\"}", temp, hum, fire, press/1000, lux);
 
             // 拼接数据包
             link1(t1, t2, t3);
-            // printf("%d\r\n", i);
+            //串口输出数据到LoRa
             UART4_Test(result);
-            UART5_Test(result);
+            // UART5_Test(result);
             printf("tm=%d", tmn);
             i++;
             cnt = 0;
         }
         cnt++;
-        tmn = UART5_Read();
-        tmn = UART4_Read();
+        // tmn = UART5_Read();
+        // tmn = UART4_Read();
 
         // result内存释放，避免溢出
         memset(result, 0, sizeof(result));
