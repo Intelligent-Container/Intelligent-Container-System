@@ -101,7 +101,7 @@ int UART5_Test(void)
     count = ls1x_uart_read(devUART5, buff, 256, NULL);
     // delay_ms(500);
 
-    if (strncmp(buff, "0101", 4) == 0)
+    if (strncmp(buff, "0102", 4) == 0)
     {
         char tmp[8] = "0";
         char dev[8] = "0";
@@ -116,10 +116,10 @@ int UART5_Test(void)
 
         if (strncmp(dev, "01", 2) == 0)
         {
-            printf("已连接至2K1000:");
-            if (strncmp(add, "01", 2) == 0)
+            printf("已连接至2K1000,");
+            if (strncmp(add, "02", 2) == 0)
             {
-                printf("%s\r\n", add);
+                printf("本设备地址:%s\r\n", add);
                 if (strncmp(exe, "00", 2) == 0)
                 {
                     // 十六进制操作指令转为十进制
@@ -235,7 +235,7 @@ void UART4_Test(void)
     count = ls1x_uart_read(devUART4, buff, 256, NULL);
     // delay_ms(500);
 
-    if (strncmp(buff, "0101", 4) == 0)
+    if (strncmp(buff, "0102", 4) == 0)
     {
         char tmp[8] = "0";
         char dev[8] = "0";
@@ -250,10 +250,10 @@ void UART4_Test(void)
 
         if (strncmp(dev, "01", 2) == 0)
         {
-            printf("已连接至2K1000:");
-            if (strncmp(add, "01", 2) == 0)
+            printf("已连接至2K1000,");
+            if (strncmp(add, "02", 2) == 0)
             {
-                printf("%s\r\n", add);
+                printf("本设备地址:%s\r\n", add);
                 if (strncmp(exe, "00", 2) == 0)
                 {
                     // 十六进制操作指令转为十进制
